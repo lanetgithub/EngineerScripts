@@ -5,7 +5,7 @@
 Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
 
 # Set execution policy to allow scripts to run within this session.
-# Less Restrictive:  Set-ExecutionPolicy Unrestricted -Scope LocalMachine
+# Less Restrictive :  Set-ExecutionPolicy Unrestricted -Scope LocalMachine
 Set-ExecutionPolicy Bypass -Scope Process -Force
 
 #Install CLI
@@ -38,7 +38,39 @@ winget upgrade --id Microsoft.VisualStudioCode -e --accept-package-agreements --
 # Install Git for Windows if using DevOps/GitHub Repos
 winget install --id Git.Git -e --source winget
 winget install GitExtensionsTeam.GitExtension
- 
+
+# Install VS Code extensions but first enable the code app to work so add path details and set it up to run in this session.
+
+# Ensure the script is running as Administrator
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
+    [Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Warning "⚠️ Please run this script as Administrator."
+    exit
+}
+
+# Define the VS Code bin path (System-wide install)
+$vsCodePath = "C:\Program Files\Microsoft VS Code\bin"
+
+# Get the current system PATH
+$regPath = "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment"
+$currentPath = (Get-ItemProperty -Path $regPath -Name Path).Path
+
+# Check if the path is already present
+if ($currentPath -notlike "*$vsCodePath*") {
+    $newPath = "$currentPath;$vsCodePath"
+    Set-ItemProperty -Path $regPath -Name Path -Value $newPath
+    Write-Output "✅ VS Code path added to system PATH. A restart or logoff may be required for all users to see the change."
+} else {
+    Write-Output "ℹ️ VS Code path is already in the system PATH."
+}
+
+# Reload system environment variables into the current session
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" +
+            [System.Environment]::GetEnvironmentVariable("Path", "User")
+
+# Test if 'code' is now available
+code --version
+
 # Install VS Code Extensions - Open VS Code in a new Terminal
  
 code --install-extension ms-vscode.vscode-node-azure-pack
