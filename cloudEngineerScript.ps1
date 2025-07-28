@@ -33,7 +33,7 @@ if (Get-InstalledModule -Name Microsoft.Graph -ErrorAction SilentlyContinue) {
 }
 
 # Install or upgrade VS Code
-winget upgrade --id Microsoft.VisualStudioCode -e --accept-package-agreements --accept-source-agreements || winget install --id Microsoft.VisualStudioCode -e --accept-package-agreements --accept-source-agreements
+winget upgrade --id Microsoft.VisualStudioCode -e --accept-package-agreements --accept-source-agreements | winget install --id Microsoft.VisualStudioCode -e --accept-package-agreements --accept-source-agreements
 
 # Install Git for Windows if using DevOps/GitHub Repos
 winget install --id Git.Git -e --source winget
