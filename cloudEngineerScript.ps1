@@ -1,17 +1,12 @@
 # Make sure you are running an Admin PowerShell Session
 
-# Set execution policy to allow scripts to run within this session.
-Set-ExecutionPolicy Bypass -Scope Process -Force
-# Less Restrictive :  Set-ExecutionPolicy Unrestricted -Scope LocalMachine
-
-# Enforce TLS 1.2 for secure connectivity
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-
-# Trust PowerShell Gallery to suppress prompts
-Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
-
 # Install NuGet provider silently (system-wide)
-Install-PackageProvider -Name NuGet -Force -ForceBootstrap -Scope AllUsers
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
+
+# Set execution policy to allow scripts to run within this session.
+# Less Restrictive:  Set-ExecutionPolicy Unrestricted -Scope LocalMachine
+Set-ExecutionPolicy Bypass -Scope Process -Force
 
 #Install CLI
 winget install --id Microsoft.AzureCLI -e --accept-package-agreements --accept-source-agreements
@@ -43,15 +38,15 @@ winget upgrade --id Microsoft.VisualStudioCode -e --accept-package-agreements --
 # Install Git for Windows if using DevOps/GitHub Repos
 winget install --id Git.Git -e --source winget
 winget install GitExtensionsTeam.GitExtension
-
+ 
 # Install VS Code Extensions - Open VS Code in a new Terminal
-
+ 
 code --install-extension ms-vscode.vscode-node-azure-pack
 code --install-extension ms-vscode.powershell
 code --install-extension ms-azuretools.vscode-bicep
 
 # DevOps VS DevOps Code Extensions
-
+ 
 code --install-extension hashicorp.terraform                       # Terraform
 code --install-extension redhat.vscode-yaml                        # YAML
 code --install-extension ms-azuretools.vscode-docker               # Docker
