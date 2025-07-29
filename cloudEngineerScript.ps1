@@ -1,8 +1,10 @@
 # Make sure you are running an Admin PowerShell Session
-
 # Install NuGet provider silently (system-wide)
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
+
+# Ensure PSGallery is trusted
+Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
 
 # Set execution policy to allow scripts to run within this session.
 # Less Restrictive :  Set-ExecutionPolicy Unrestricted -Scope LocalMachine
@@ -44,7 +46,7 @@ winget install GitExtensionsTeam.GitExtension
 # Ensure the script is running as Administrator
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
     [Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Write-Warning "⚠️ Please run this script as Administrator."
+    Write-Warning " Please run this script as Administrator."
     exit
 }
 
@@ -59,9 +61,9 @@ $currentPath = (Get-ItemProperty -Path $regPath -Name Path).Path
 if ($currentPath -notlike "*$vsCodePath*") {
     $newPath = "$currentPath;$vsCodePath"
     Set-ItemProperty -Path $regPath -Name Path -Value $newPath
-    Write-Output "✅ VS Code path added to system PATH. A restart or logoff may be required for all users to see the change."
+    Write-Output " VS Code path added to system PATH. A restart or logoff may be required for all users to see the change."
 } else {
-    Write-Output "ℹ️ VS Code path is already in the system PATH."
+    Write-Output " VS Code path is already in the system PATH."
 }
 
 # Reload system environment variables into the current session
@@ -72,13 +74,13 @@ $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";
 code --version
 
 # Install VS Code Extensions - Open VS Code in a new Terminal
- 
+
 code --install-extension ms-vscode.vscode-node-azure-pack
 code --install-extension ms-vscode.powershell
 code --install-extension ms-azuretools.vscode-bicep
 
 # DevOps VS DevOps Code Extensions
- 
+
 code --install-extension hashicorp.terraform                       # Terraform
 code --install-extension redhat.vscode-yaml                        # YAML
 code --install-extension ms-azuretools.vscode-docker               # Docker
