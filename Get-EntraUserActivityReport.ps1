@@ -895,7 +895,6 @@ $ReportOutput = [ordered]@{
 $ReportJson = $ReportOutput |
     ConvertTo-Json `
         -Depth 8 `
-        -Compress
 
 Write-Output 'STRUCTURED-REPORT-JSON-BEGIN'
 Write-Output $ReportJson
