@@ -63,21 +63,17 @@ $resources = @(
         ResourceId   = 'avd-users'
 
         Groups = @(
-            'c58225ec-5e37-45a2-826d-44edce612248'
+            'c45adaf9-36c4-4469-bd43-94398f65e27c'
         )
     }
 
     @{
-        ResourceName = 'Database Access'
-        ResourceType = 'Database'
-        ResourceId   = 'database-access'
+        ResourceName = 'Staff Access'
+        ResourceType = 'AllStaff'
+        ResourceId   = 'AllStaff-Access'
 
         Groups = @(
-            '4b16864c-8d38-4c46-9dd5-e6e05bb89525',
-            '879a8bcf-ee29-4f43-bccc-8eb6b9478f1a',
-            '8a9d0d2a-ba4f-4b13-9b44-b60c95c9a67c',
-            '830d9380-9ae2-49bd-8933-4bf320b5cf40'
-
+            'e9abef49-fd9c-469d-95f8-42cab8e47b18'
         )
     }
 )
