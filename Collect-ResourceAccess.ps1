@@ -757,6 +757,7 @@ foreach ($resource in $resources) {
                     AccessGroupName = $group.displayName
                     AccessGroupId   = $group.id
 
+                    UserId            = $user.id
                     UserPrincipalName = $user.userPrincipalName
                     DisplayName       = $user.displayName
 
